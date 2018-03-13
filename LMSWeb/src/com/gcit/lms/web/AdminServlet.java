@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
+import com.gcit.lms.entity.BookCopy;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.lms.service.AdminService;
@@ -22,7 +23,7 @@ import com.gcit.ms.dao.PublisherDAO;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({ "/addAuthor", "/addBook", "/deleteAuthor", "/deleteBook", "/editAuthor", "/pageAuthors", 
+@WebServlet({ "/addAuthor", "/addBook", "/deleteAuthor", "/deleteBook", "/editAuthor", "/pageAuthors", "/addCopies",
 	"/updateBook", "/savePublisher", "/updatePublisher", "/searchAuthors", "/deletePublisher", "/updateBranch" })
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -154,6 +155,18 @@ public class AdminServlet extends HttpServlet {
 			}
 			request.setAttribute("message", "Book addition successfull");
 			forwardPath = "/viewbook.jsp";
+			break;
+		case "/addCopies":
+			try {
+				BookCopy copy = new BookCopy();
+				copy.setBookId(Integer.valueOf(request.getParameter("bookId")));
+				copy.setBranchId(Integer.valueOf(request.getParameter("branchId")));
+				copy.setNoOfCopies(Integer.valueOf(request.getParameter("noOfCopies")));
+				adminService.updateBookCopies(copy);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+			forwardPath = "/changecopies.jsp";
 			break;
 		case "/updateBook":
 			try {

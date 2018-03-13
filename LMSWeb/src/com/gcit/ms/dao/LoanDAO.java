@@ -13,10 +13,7 @@ import java.util.List;
 
 import com.gcit.lms.entity.BookLoan;
 
-/**
- * @bookLoan ppradhan
- *
- */
+
 public class LoanDAO extends BaseDAO<BookLoan>{
 	
 	public LoanDAO(Connection conn) {

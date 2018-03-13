@@ -9,11 +9,14 @@ import java.util.List;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
+import com.gcit.lms.entity.BookCopy;
+import com.gcit.lms.entity.BookLoan;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.ms.dao.AuthorDAO;
 import com.gcit.ms.dao.BookDAO;
 import com.gcit.ms.dao.BranchDAO;
+import com.gcit.ms.dao.CopiesDAO;
 import com.gcit.ms.dao.LibraryBranchDAO;
 import com.gcit.ms.dao.PublisherDAO;
 
@@ -104,6 +107,24 @@ public class AdminService {
 				}
 			}
 		}
+	
+	public boolean updateBookCopies(BookCopy copy) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = connUtil.getConnection();
+			CopiesDAO cdao = new CopiesDAO(conn);
+			cdao.addBookCopy(copy);
+			conn.commit();
+			return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return false;
+	}
 
 	public void deleteBook(Book book) throws SQLException{
 		Connection conn = null;
@@ -188,6 +209,22 @@ public class AdminService {
 			}else{
 				return bdao.readAllLibraryBranches(pageNo);
 			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return null;
+	}
+	
+	public List<BookCopy> getCopiesByBranch(Integer branchId) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = connUtil.getConnection();
+			CopiesDAO cdao = new CopiesDAO(conn);
+			return cdao.readBookLoansByBranch(branchId);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally{

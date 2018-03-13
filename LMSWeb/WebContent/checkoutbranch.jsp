@@ -2,6 +2,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.gcit.lms.service.BorrowerService"%>
 <%@page import="com.gcit.lms.entity.Book"%>
+<%@page import="com.gcit.lms.entity.Author"%>
 <%@include file="include.html"%>
 <% 
 	Integer branchId = Integer.valueOf(request.getParameter("branchId"));
@@ -16,7 +17,7 @@
 			<tr>
 				<th>Book Id</th>
 				<th>Book Title</th>
-				<th>Library Address</th>
+				<th>Book Authors</th>
 				<th>Select</th>
 			</tr>
 		</thead>
@@ -31,7 +32,10 @@
 					%>
 				</td>
 				<td><%=b.getTitle()%></td>
-				<td><%=b.getTitle()%></td>
+				<td><% for(Author a : b.getAuthors()){
+					out.println(a.getAuthorName() + " | ");
+				}
+				%></td>
 				<td><button class="btn btn-primary"
 						onclick="javascript:location.href='checkoutBook?borrowerId=<%=borrowerId%>&branchId=<%=branchId%>&bookId=<%=b.getBookId()%>'">Checkout</button></td>
 			</tr>
