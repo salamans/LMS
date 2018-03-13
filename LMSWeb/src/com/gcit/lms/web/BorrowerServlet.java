@@ -82,6 +82,7 @@ public class BorrowerServlet extends HttpServlet{
 					forwardPath = "borrower.jsp?borrowerId="+cardNo;
 				}
 				else{
+					request.setAttribute("message", "Invalid login creditial. Please try again.");
 					forwardPath = "borrowerLogin.jsp";
 				}
 			} catch (NumberFormatException e) {
