@@ -13,6 +13,7 @@ public class Book {
 	
 	private Integer bookId;
 	private String title;
+	private Integer publisherId;
 	private List<Author> authors;
 	private List<Genre> genres;
 	private Publisher publisher;
@@ -63,6 +64,12 @@ public class Book {
 	 */
 	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
+	}
+	public Integer getPublisherId() {
+		return publisherId;
+	}
+	public void setPublisherId(Integer publisherId) {
+		this.publisherId = publisherId;
 	}
 	/**
 	 * @return the publisher

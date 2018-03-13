@@ -24,7 +24,8 @@ import com.gcit.ms.dao.PublisherDAO;
  * Servlet implementation class AdminServlet
  */
 @WebServlet({ "/addAuthor", "/addBook", "/deleteAuthor", "/deleteBook", "/editAuthor", "/pageAuthors", "/addCopies",
-	"/updateBook", "/savePublisher", "/updatePublisher", "/searchAuthors", "/deletePublisher", "/updateBranch" })
+	"/updateBook", "/savePublisher", "/updatePublisher", "/searchAuthors", "/searchBooks", "/deletePublisher", "/updateBranch", 
+	"/pageBooks", "/pagePublishers", "/pageBranches"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -46,6 +47,7 @@ public class AdminServlet extends HttpServlet {
 				request.getRequestURI().length());
 		Integer authorId = null;
 		String forwardPath = "/viewauthors.jsp";
+		Integer pageNo;
 		switch (reqUrl) {
 		case "/editAuthor":
 			try {
@@ -90,13 +92,43 @@ public class AdminServlet extends HttpServlet {
 			forwardPath = "viewpublishers.jsp";
 			break;
 		case "/pageAuthors":
-			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			try {
 				request.setAttribute("authors", adminService.getAuthors(null, pageNo));
 			} catch (SQLException e) {
 				request.setAttribute("authors", null);
 				e.printStackTrace();
 			}
+			break;
+		case "/pageBooks":
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			try {
+				request.setAttribute("books", adminService.getBooks(null, pageNo));
+			} catch (SQLException e) {
+				request.setAttribute("books", null);
+				e.printStackTrace();
+			}
+			forwardPath = "/viewbook.jsp";
+			break;
+		case "/pagePublishers":
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			try {
+				request.setAttribute("pubs", adminService.getPublishers(null, pageNo));
+			} catch (SQLException e) {
+				request.setAttribute("pubs", null);
+				e.printStackTrace();
+			}
+			forwardPath = "/viewpublishers.jsp";
+			break;
+		case "/pageBranches":
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			try {
+				request.setAttribute("branches", adminService.getLibraryBranches(null, pageNo));
+			} catch (SQLException e) {
+				request.setAttribute("branches", null);
+				e.printStackTrace();
+			}
+			forwardPath = "/viewBranches.jsp";
 			break;
 		default:
 			break;
@@ -114,6 +146,7 @@ public class AdminServlet extends HttpServlet {
 		String reqUrl = request.getRequestURI().substring(request.getContextPath().length(),
 				request.getRequestURI().length());
 		Integer authorId = null;
+		String searchString = null;
 		String forwardPath = "/viewauthors.jsp";
 		Boolean isAJAX = Boolean.FALSE;
 		switch (reqUrl) {
@@ -147,6 +180,7 @@ public class AdminServlet extends HttpServlet {
 					authors.add(adminService.getAuthorsByPK(Integer.valueOf(s)));
 				}
 				book.setAuthors(authors);
+				book.setPublisherId(pubId);
 				book.setPublisher(adminService.getPublishersByPK(pubId));
 				adminService.saveBook(book);
 			} catch (Exception e1) {
@@ -231,7 +265,7 @@ public class AdminServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		case "/searchAuthors":
-			String searchString = request.getParameter("searchString");
+			searchString = request.getParameter("searchString");
 			try {
 				List<Author> authors = adminService.getAuthors(searchString, 1);
 				StringBuffer strBuf = new StringBuffer();
@@ -248,6 +282,32 @@ public class AdminServlet extends HttpServlet {
 					strBuf.append(
 							"<td><button class='btn btn-danger' onclick='javascript:location.href='deleteAuthor?authorId="
 									+ a.getAuthorId() + "''>Delete</button></td></tr>");
+				}
+				strBuf.append("</table>");
+				response.getWriter().write(strBuf.toString());
+				isAJAX = Boolean.TRUE;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		case "/searchBooks":
+			try {
+				searchString = request.getParameter("searchString");
+				List<Book> books = adminService.getBooks(searchString, 1);
+				StringBuffer strBuf = new StringBuffer();
+				strBuf.append(
+						"<table class='table table-striped'><tr><th>Author ID</th><th>Author Name</th><th>Books Written</th><th>Edit</th><th>Delete</th></tr>");
+				for (Book b : books) {
+					strBuf.append("<tr><td>" + books.indexOf(b) + 1 + "</td><td>" + b.getTitle() + "</td><td>");
+					for (Author a : b.getAuthors()) {
+						strBuf.append(a.getAuthorName() + " | ");
+					}
+					strBuf.append(
+							"</td><td><button class='btn btn-warning' href='editbook.jsp?bookId=" + b.getBookId()
+									+ "' data-toggle='modal' data-target='#myEditBookModal'>Edit</button></td>");
+					strBuf.append(
+							"<td><button class='btn btn-danger' onclick='javascript:location.href='deleteBook?bookId="
+									+ b.getBookId() + "''>Delete</button></td></tr>");
 				}
 				strBuf.append("</table>");
 				response.getWriter().write(strBuf.toString());

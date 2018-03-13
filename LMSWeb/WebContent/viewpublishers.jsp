@@ -16,14 +16,14 @@
 	int pageSize = (int) Math.ceil(totalPublishers / 10 + 1);
 %>
 <script>
-	function searchBookss(){
+	function searchPubs(){
 		$.ajax({
 			  method: "POST",
-			  url: "searchBooks",
+			  url: "searchPubs",
 			  data: { "searchString": $('#searchString').val() 
 				}
 		}).done(function( data ) {
-			$('#booksTable').html(data);
+			$('#publishersTable').html(data);
 		});
 	}
 
@@ -33,7 +33,7 @@
 	<h2>List of Publishers in LMS</h2>
 	${message}
 	<div class="input-group">
-			<input type="text" class="form-control" placeholder="Search Books" aria-describedby="basic-addon1" id="searchString" oninput="searchBooks()">
+			<input type="text" class="form-control" placeholder="Search Publishers" aria-describedby="basic-addon1" id="searchString" oninput="searchPubs()">
 	</div>
 	<nav aria-label="Page navigation">
 		<ul class="pagination">
@@ -51,7 +51,7 @@
 			</a></li>
 		</ul>
 	</nav>
-	<table class="table table-striped" id="publisherTable">
+	<table class="table table-striped" id="publishersTable">
 		<tr>
 			<th>Publisher ID</th>
 			<th>Name</th>

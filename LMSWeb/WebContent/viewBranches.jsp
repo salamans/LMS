@@ -7,23 +7,23 @@
 <%
 	AdminService adminService = new AdminService();
 	List<LibraryBranch> branches = new ArrayList<>();
-	if (request.getAttribute("authors") != null) {
+	if (request.getAttribute("branches") != null) {
 		branches = (List<LibraryBranch>) request.getAttribute("branches");
 	} else {
 		branches = adminService.getLibraryBranches(null, 1);
 	}
 	Integer totalBranches = adminService.getLibrariesCount();
-	int pageSize = (int) Math.ceil(totalBranches / 10 + 1);
+	int pageSize = (int) Math.ceil(totalBranches / 10.0 );
 %>
 <script>
 	function searchAuthors(){
 		$.ajax({
 			  method: "POST",
-			  url: "searchAuthors",
+			  url: "searchBranches",
 			  data: { "searchString": $('#searchString').val() 
 				}
 		}).done(function( data ) {
-			$('#authorsTable').html(data);
+			$('#branchesTable').html(data);
 		});
 	}
 
@@ -33,7 +33,7 @@
 	<h2>List of Library Branches in LMS</h2>
 	${message}
 	<div class="input-group">
-			<input type="text" class="form-control" placeholder="Search Branches" aria-describedby="basic-addon1" id="searchString" oninput="searchAuthors()">
+			<input type="text" class="form-control" placeholder="Search Branches" aria-describedby="basic-addon1" id="searchString" oninput="searchBranches()">
 	</div>
 	<nav aria-label="Page navigation">
 		<ul class="pagination">
@@ -43,7 +43,7 @@
 			<%
 				for (int i = 1; i <= pageSize; i++) {
 			%>
-			<li><a href="pageAuthors?pageNo=<%=i%>"><%=i%></a></li>
+			<li><a href="pageBranches?pageNo=<%=i%>"><%=i%></a></li>
 			<%
 				}
 			%>

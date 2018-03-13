@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 
 /**
@@ -23,11 +22,11 @@ public class BookDAO extends BaseDAO<Book>{
 	}
 
 	public void addBook(Book book) throws SQLException, ClassNotFoundException {
-		save("INSERT INTO tbl_book (title, pubId) VALUES (?,?)", new Object[] {book.getTitle(), new Integer(15789)});
+		save("INSERT INTO tbl_book (title, pubId) VALUES (?,?)", new Object[] {book.getTitle(), book.getPublisherId()});
 	}
 	
 	public Integer addBookGetPK(Book book) throws SQLException, ClassNotFoundException {
-		return saveWithID("INSERT INTO tbl_book (title, pubId) VALUES (?,?)", new Object[] {book.getTitle(), new Integer(15789)});
+		return saveWithID("INSERT INTO tbl_book (title, pubId) VALUES (?,?)", new Object[] {book.getTitle(), book.getPublisherId()});
 	}
 
 	public void updateBook(Book book) throws SQLException, ClassNotFoundException  {

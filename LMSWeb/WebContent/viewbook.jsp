@@ -13,10 +13,10 @@
 		books = adminService.getBooks(null, 1);
 	}
 	Integer totalBooks = adminService.getBooksCount();
-	int pageSize = (int) Math.ceil(totalBooks / 10 + 1);
+	int pageSize = (int) Math.ceil(totalBooks / 10.0);
 %>
 <script>
-	function searchBookss(){
+	function searchBooks(){
 		$.ajax({
 			  method: "POST",
 			  url: "searchBooks",
@@ -43,7 +43,7 @@
 			<%
 				for (int i = 1; i <= pageSize; i++) {
 			%>
-			<li><a href="pageAuthors?pageNo=<%=i%>"><%=i%></a></li>
+			<li><a href="pageBooks?pageNo=<%=i%>"><%=i%></a></li>
 			<%
 				}
 			%>
@@ -51,7 +51,7 @@
 			</a></li>
 		</ul>
 	</nav>
-	<table class="table table-striped" id="authorsTable">
+	<table class="table table-striped" id="booksTable">
 		<tr>
 			<th>Book ID</th>
 			<th>Title</th>

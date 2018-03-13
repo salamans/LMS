@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gcit.lms.entity.Author;
-import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.LibraryBranch;
 
 public class LibraryBranchDAO extends BaseDAO<LibraryBranch>{
