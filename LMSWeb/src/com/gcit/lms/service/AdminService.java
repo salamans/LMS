@@ -11,12 +11,14 @@ import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookCopy;
 import com.gcit.lms.entity.BookLoan;
+import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.ms.dao.AuthorDAO;
 import com.gcit.ms.dao.BookDAO;
 import com.gcit.ms.dao.BranchDAO;
 import com.gcit.ms.dao.CopiesDAO;
+import com.gcit.ms.dao.GenreDAO;
 import com.gcit.ms.dao.LibraryBranchDAO;
 import com.gcit.ms.dao.PublisherDAO;
 
@@ -65,6 +67,9 @@ public class AdminService {
 				Integer bookId = bdao.addBookGetPK(book);
 				for(Author a: book.getAuthors()){
 					adao.addBookAuthors(bookId,a.getAuthorId());
+				}
+				for(Genre g: book.getGenres()){
+					bdao.addBookGenres(bookId,g.getGenreId());
 				}
 			}
 			//same fo genre
@@ -199,6 +204,26 @@ public class AdminService {
 		return null;
 	}
 	
+	public List<Genre> getGenres(String genreName, Integer pageNo) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = connUtil.getConnection();
+			GenreDAO gdao = new GenreDAO(conn);
+			if(genreName!=null){
+				
+			}else{
+				return gdao.readAllGenres(pageNo);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return null;
+	}
+	
 	public List<LibraryBranch> getLibraryBranches(String libName, Integer pageNo) throws SQLException{
 		Connection conn = null;
 		try {
@@ -299,6 +324,22 @@ public class AdminService {
 		return null;
 	}
 	
+	public Genre getGenreByPK(Integer genreId) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = connUtil.getConnection();
+			GenreDAO gdao = new GenreDAO(conn);
+			return gdao.readGenreByPK(genreId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return null;
+	}
+	
 	public Integer getAuthorsCount() throws SQLException{
 		Connection conn = null;
 		try {
@@ -337,6 +378,22 @@ public class AdminService {
 			conn = connUtil.getConnection();
 			PublisherDAO pdao = new PublisherDAO(conn);
 			return pdao.getPublisherCount();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return null;
+	}
+	
+	public Integer getGenreCount() throws SQLException{
+		Connection conn = null;
+		try {
+			conn = connUtil.getConnection();
+			GenreDAO gdao = new GenreDAO(conn);
+			return gdao.getGenresCount(null);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally{

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookCopy;
+import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.lms.service.AdminService;
@@ -173,15 +174,21 @@ public class AdminServlet extends HttpServlet {
 			try {
 				Book book = new Book();
 				String[] authorIds = request.getParameterValues("authorIds");
+				String[] genreIds = request.getParameterValues("genreIds");
 				Integer pubId = Integer.valueOf(request.getParameter("publisherId"));
 				book.setTitle(request.getParameter("bookName"));
 				List<Author> authors = new ArrayList<Author>();
 				for(String s : authorIds){
 					authors.add(adminService.getAuthorsByPK(Integer.valueOf(s)));
 				}
+				List<Genre> genres = new ArrayList<Genre>();
+				for(String s : genreIds){
+					genres.add(adminService.getGenreByPK(Integer.valueOf(s)));
+				}
 				book.setAuthors(authors);
 				book.setPublisherId(pubId);
 				book.setPublisher(adminService.getPublishersByPK(pubId));
+				book.setGenres(genres);
 				adminService.saveBook(book);
 			} catch (Exception e1) {
 				e1.printStackTrace();

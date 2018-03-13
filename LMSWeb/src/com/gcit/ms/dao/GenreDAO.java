@@ -51,7 +51,7 @@ public class GenreDAO extends BaseDAO<Genre>{
 		return getCount("SELECT COUNT(*) COUNT FROM tbl_genre", null);
 	}
 	
-	public Genre readGenreByPk(Integer genreId) throws ClassNotFoundException, SQLException{
+	public Genre readGenreByPK(Integer genreId) throws ClassNotFoundException, SQLException{
 		List<Genre> genres =  read("SELECT * FROM tbl_genre WHERE genre_id = ?", new Object[]{genreId});
 		if(genres!=null){
 			return genres.get(0);

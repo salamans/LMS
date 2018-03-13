@@ -37,6 +37,11 @@ public class BookDAO extends BaseDAO<Book>{
 		save("DELETE FROM tbl_book WHERE bookId = ?", new Object[] {book.getBookId()});
 	}
 	
+	public void addBookGenres(Integer bookId, Integer genreId) throws ClassNotFoundException, SQLException {
+		save("INSERT INTO tbl_book_genres VALUES (?, ?)", new Object[]{genreId, bookId});
+		
+	}
+
 	public List<Book> readAllBooks(Integer pageNo) throws ClassNotFoundException, SQLException{
 		setPageNo(pageNo);
 		return read("SELECT * FROM tbl_book", null);
