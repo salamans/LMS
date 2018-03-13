@@ -1,6 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.gcit.lms.entity.Book"%>
 <%@page import="com.gcit.lms.entity.Author"%>
+<%@page import="com.gcit.lms.entity.Genre"%>
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.lms.service.AdminService"%>
 <%@include file="include.html"%>
@@ -13,7 +14,7 @@
 		books = adminService.getBooks(null, 1);
 	}
 	Integer totalBooks = adminService.getBooksCount();
-	int pageSize = (int) Math.ceil(totalBooks / 10.0);
+	int pageSize = (int) Math.ceil(totalBooks / 10.0 );
 %>
 <script>
 	function searchBooks(){
@@ -57,6 +58,7 @@
 			<th>Title</th>
 			<th>Authors</th>
 			<th>Publisher</th>
+			<th>Genres</th>
 			<th>Edit</th>
 			<th>Delete</th>
 		</tr>
@@ -78,6 +80,13 @@
 				%>
 			</td>
 			<td><%=b.getPublisher().getPublisherName() %></td>
+			<td>
+				<%
+					for (Genre g : b.getGenres()) {
+							out.println(g.getGenreName() + " | ");
+						}
+				%>
+			</td>
 			<td><button class="btn btn-warning"
 					href="editbook.jsp?bookId=<%=b.getBookId()%>"
 					data-toggle="modal" data-target="#myEditBookModal">Edit</button></td>
